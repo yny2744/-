@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>전세 보증한도 계산기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    label, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 5px;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>전세 보증한도 계산기</h1>
+
+  <label>보증금 (만원):
+    <input type="number" id="deposit">
+  </label>
+  <label>연소득 (만원):
+    <input type="number" id="income">
+  </label>
+  <label>부채 (만원):
+    <input type="number" id="debt">
+  </label>
+  <label>
+    <input type="checkbox" id="installment"> 분할 상환 방식 (선택)
+  </label>
+
+  <button onclick="calculate()">계산하기</button>
+
+  <p id="result"></p>
+
+  <script>
+    function calculate() {
+      const deposit = parseFloat(document.getElementById('deposit').value);
+      const income = parseFloat(document.getElementById('income').value);
+      const debt = parseFloat(document.getElementById('debt').value);
+      const isInstallment = document.getElementById('installment').checked;
+
+      if (!deposit || !income) {
+        document.getElementById('result').innerText = '모든 값을 정확히 입력해 주세요.';
+        return;
+      }
+
+      const limit1 = 40000;
+      const limit2 = deposit * 0.8;
+      let limit3 = income * 4 - debt * 0.25;
+      if (isInstallment) limit3 *= 1.2;
+
+      const finalLimit = Math.min(limit1, limit2, limit3);
+      const final88 = Math.floor(finalLimit * 0.88);
+
+      document.getElementById('result').innerText =
+        `최종 보증한도는 약 ${final88.toLocaleString()}만원입니다.`;
+    }
+  </script>
+</body>
+</html>
